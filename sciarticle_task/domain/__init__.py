@@ -1,4 +1,9 @@
 """Domain zone module.
 
-Contain models, base errors.
+Contain entities, base error.
 """
+
+from . import constants, entities
+from ._errors import BaseError
+
+__all__ = ("BaseError", "entities", "constants")

@@ -1,0 +1,27 @@
+@startuml
+autonumber
+title Post message
+
+actor user as "User"
+participant api as "API"
+participant mediator as "Mediator"
+participant handler as "Handler"
+participant websocket_manager as "WebsocketManager"
+participant websocket as "Websocket"
+actor room as "Room"
+
+user -> api ++: POST /message/
+
+api -> mediator: PostMessageCommand
+
+mediator -> handler: message, room_id
+
+handler -> websocket: message, room_id
+
+handler -> websocket_manager: message, room_id
+
+websocket_manager -> websocket: message
+
+api -> user --: HTTP 201: CREATED, message_id
+
+@enduml

@@ -2,8 +2,9 @@ from fastapi import APIRouter
 
 from . import _healthcheck
 
-router = APIRouter(tags=["common"])
-
 
 def register(router: APIRouter) -> None:
-    router.include_router(_healthcheck.router)
+    _router = APIRouter(tags=["common"])
+    _router.include_router(_healthcheck.router)
+
+    router.include_router(_router)

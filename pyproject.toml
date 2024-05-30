@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "sciarticle-task"
+version = "0.1.0"
+description = ""
+authors = ["likeinlife <likeinlife@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sqlalchemy = "^2.0.30"
+fastapi = "^0.111.0"
+faststream = { extras = ["rabbit"], version = "^0.5.10" }
+pydantic = "^2.7.2"
+pydantic-settings = "^2.2.1"
+asgi-correlation-id = "^4.3.1"
+structlog = "^24.2.0"
+dependency-injector = "^4.41.0"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.10.0"
+ruff = "^0.4.6"
+pre-commit = "^3.7.1"
+
+[tool.poetry.group.dev]
+optional = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+exclude = ["migrations"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    # Allow boolean type in func arguments
+    "FBT001",
+    # Allow PEP585 annotations like dict[str, str] 
+    "FA102",
+    # No blankline before class
+    "D203",
+    # Multiline string summary should start at the first line
+    "D213",
+]
+exclude = []
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.params.Depends",
+    "fastapi.Query",
+    "fastapi.params.Query",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = []
+"tests/**/__init__.py" = ["D104"]
+
+[tool.mypy]
+ignore_missing_imports = true
+follow_imports = "normal"

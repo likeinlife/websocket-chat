@@ -26,6 +26,7 @@ class AppSettings(BaseSettings):
     model_config = _model_config(env_prefix="APP_")
 
     name: str = Field(init=False)
+    version: str = Field(init=False)
 
 
 class Settings(BaseSettings):

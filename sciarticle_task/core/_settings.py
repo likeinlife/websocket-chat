@@ -27,6 +27,7 @@ class AppSettings(BaseSettings):
 
     name: str = Field(init=False)
     version: str = Field(init=False)
+    debug: bool = Field(default=False, init=False)
 
 
 class Settings(BaseSettings):

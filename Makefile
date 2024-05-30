@@ -19,6 +19,10 @@ lint:
 app:
 	${DC} -f ${APP_FILE} ${ENV} up --build -d
 
+.phony: app-local
+app-local:
+	cd sciarticle_task; uvicorn application.api.main:app --reload
+
 .phony: storages
 storages:
 	${DC} -f ${STORAGES_FILE} ${ENV} up --build -d

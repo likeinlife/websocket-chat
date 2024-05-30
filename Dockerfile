@@ -1,4 +1,4 @@
-FROM python:3.10.13-alpine3.17
+FROM python:3.10.14-alpine3.20
 
 WORKDIR /opt/app
 
@@ -11,7 +11,7 @@ COPY requirements.txt requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-COPY ./banner_api .
+COPY ./sciarticle_task .
 
 RUN chmod +x ./docker-entrypoint.sh
 

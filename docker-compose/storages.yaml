@@ -1,0 +1,21 @@
+services:
+  rabbit:
+    image: rabbitmq:3.12.14-management-alpine
+    container_name: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

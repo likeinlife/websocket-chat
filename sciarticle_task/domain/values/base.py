@@ -5,7 +5,7 @@ from dataclasses import dataclass
 V = tp.TypeVar("V")
 
 
-@dataclass(frozen=True)
+@dataclass
 class BaseValueObject(abc.ABC, tp.Generic[V]):
     """Base value object."""
 

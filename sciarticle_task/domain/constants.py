@@ -2,4 +2,4 @@
 
 import typing as tp
 
-MAX_TITLE_LEN: tp.Final = 256
+MAX_MESSAGE_LEN: tp.Final = 2048

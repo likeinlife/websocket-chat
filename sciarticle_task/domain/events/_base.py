@@ -1,4 +1,3 @@
-import typing as tp
 from dataclasses import (
     dataclass,
     field,
@@ -12,7 +11,5 @@ from uuid import (
 
 @dataclass
 class BaseEvent:
-    event_title: tp.ClassVar[str]
-
     event_id: UUID = field(default_factory=uuid4, kw_only=True)
     occurred_at: datetime = field(default_factory=datetime.now, kw_only=True)

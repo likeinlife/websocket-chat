@@ -10,9 +10,10 @@ class EmptyTextError(BaseError):  # noqa: D101
 
 
 @dataclass
-class TitleTooLongError(BaseError):  # noqa: D101
-    title: str
+class MessageTooLongError(BaseError):  # noqa: D101
+    max_length: int
+    input_length: int
 
     @property
     def message(self) -> str:
-        return f"Title too long: {self.title}"
+        return f"Message too long. Max length: {self.max_length}. Input length: {self.input_length}"

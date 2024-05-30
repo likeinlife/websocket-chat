@@ -13,18 +13,9 @@ from domain.events import BaseEvent
 class BaseEntity:
     """Base entity class."""
 
-    id: str = field(
-        default_factory=lambda: str(uuid4()),
-        kw_only=True,
-    )
-    _events: list[BaseEvent] = field(
-        default_factory=list,
-        kw_only=True,
-    )
-    created_at: datetime = field(
-        default_factory=datetime.now,
-        kw_only=True,
-    )
+    id: str = field(default_factory=lambda: str(uuid4()), kw_only=True)
+    _events: list[BaseEvent] = field(default_factory=list, kw_only=True)
+    created_at: datetime = field(default_factory=datetime.now, kw_only=True)
 
     def __hash__(self) -> int:
         """Entity hash base on id."""

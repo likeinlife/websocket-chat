@@ -1,6 +1,6 @@
 """Event types."""
 
 from ._base import BaseEvent
-from ._messages import ChatDeletedEvent, NewChatCreatedEvent, NewMessageEvent
+from ._messages import NewMessageEvent
 
-__all__ = ("BaseEvent", "NewChatCreatedEvent", "NewMessageEvent", "ChatDeletedEvent")
+__all__ = ("BaseEvent", "NewMessageEvent")

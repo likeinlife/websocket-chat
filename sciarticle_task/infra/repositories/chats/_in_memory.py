@@ -16,8 +16,8 @@ class InMemoryChatRepository(IChatRepository):
             raise ChatNotFoundError(chat_id=chat_id)
         return chat
 
-    async def add(self) -> Chat:
-        chat = Chat()
+    async def add(self, chat_id: str) -> Chat:
+        chat = Chat(id=chat_id)
         self.chats[chat.id] = chat
         return chat
 

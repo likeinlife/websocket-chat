@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from domain import BaseError
+from domain.errors import BaseError
 
 
 class RepositoryError(BaseError):

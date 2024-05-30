@@ -9,7 +9,7 @@ class IChatRepository(abc.ABC):
         """Fetch chat."""
 
     @abc.abstractmethod
-    async def add(self) -> Chat:
+    async def add(self, chat_id: str) -> Chat:
         """Add new chat."""
 
     @abc.abstractmethod

@@ -1,6 +1,6 @@
 from functools import partial
 
-from pydantic import Field
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _model_config = partial(SettingsConfigDict, env_file=".env", extra="ignore")
@@ -9,9 +9,10 @@ _model_config = partial(SettingsConfigDict, env_file=".env", extra="ignore")
 class RabbitSettings(BaseSettings):
     model_config = _model_config(env_prefix="RABBIT_")
 
-    title: str = Field(init=False)
-    version: str = Field(init=False)
-    debug: bool = Field(init=False)
+    password: SecretStr = Field(init=False)
+    user: SecretStr = Field(init=False)
+    host: str = Field(init=False)
+    port: int = Field(default=5672, init=False)
 
 
 class LoggingSettings(BaseSettings):

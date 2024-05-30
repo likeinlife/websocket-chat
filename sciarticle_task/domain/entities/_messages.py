@@ -7,7 +7,7 @@ from domain import events, values
 from domain.entities._base import BaseEntity
 
 
-@dataclass
+@dataclass(eq=False)
 class Message(BaseEntity):
     """Message entity with text."""
 
@@ -15,7 +15,7 @@ class Message(BaseEntity):
     text: values.Text
 
 
-@dataclass
+@dataclass(eq=False)
 class Chat(BaseEntity):
     """Chat entity with title and messages."""
 

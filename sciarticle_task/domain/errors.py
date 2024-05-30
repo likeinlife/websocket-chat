@@ -6,4 +6,5 @@ class BaseError(Exception):
         return "Base error message"
 
     def __str__(self) -> str:
+        """Return error message."""
         return self.message

@@ -9,7 +9,7 @@ from uuid import uuid4
 from domain.events import BaseEvent
 
 
-@dataclass
+@dataclass(eq=False)
 class BaseEntity:
     """Base entity class."""
 

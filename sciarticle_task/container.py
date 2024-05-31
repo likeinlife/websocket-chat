@@ -1,5 +1,6 @@
 """DI container."""
 
+import aiojobs
 from core import configure_logging, settings
 from dependency_injector import providers as p
 from dependency_injector.containers import DeclarativeContainer
@@ -9,11 +10,13 @@ from infra.repositories.messages import InMemoryMessageRepository
 from infra.websockets import WebSocketConnectionManager
 from logic import init
 from logic.mediator import Mediator
+from logic.serializer import EventSerializer
 
 
 class InfraContainer(DeclarativeContainer):
     """Brokers container."""
 
+    scheduler: p.Factory = p.Factory(aiojobs.Scheduler)
     broker: p.Singleton = p.Singleton(init_rabbitmq_broker, settings.rabbit.url)
     websockets_manager: p.Singleton = p.Singleton(WebSocketConnectionManager)
     chat_repository: p.Singleton = p.Singleton(InMemoryChatRepository)
@@ -24,10 +27,15 @@ class LogicContainer(DeclarativeContainer):
     """Logic container."""
 
     infra_container: p.DependenciesContainer = p.DependenciesContainer()
+    serializer: p.Singleton = p.Singleton(EventSerializer)
 
     event_mediator: p.Singleton = p.Singleton(
         init.init_event_mediator,
         infra_container.websockets_manager,
+        infra_container.broker,
+        settings.rabbit.message_queue,
+        settings.rabbit.message_exchange,
+        serializer,
     )
     command_mediator: p.Singleton = p.Singleton(
         init.init_command_mediator,

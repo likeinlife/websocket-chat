@@ -28,6 +28,9 @@ pre-commit = "^3.7.1"
 [tool.poetry.group.dev]
 optional = true
 
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
@@ -68,8 +71,12 @@ extend-immutable-calls = [
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = []
-"tests/**/__init__.py" = ["D104"]
+"tests/**/*.py" = ["D", "S", "ANN"]
+
 
 [tool.mypy]
 ignore_missing_imports = true
 follow_imports = "normal"
+
+[tool.pytest.ini_options]
+pythonpath = "sciarticle_task"

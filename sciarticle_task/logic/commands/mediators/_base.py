@@ -6,6 +6,8 @@ from dataclasses import dataclass, field
 from logic.commands.entities import BaseCommand
 from logic.commands.handlers import BaseCommandHandler
 
+from ._response import MediatorResponse
+
 CR = tp.TypeVar("CR")
 
 
@@ -24,4 +26,4 @@ class BaseCommandMediator(tp.Generic[CR]):
     ) -> None: ...
 
     @abc.abstractmethod
-    async def handle_command(self, command: BaseCommand) -> tp.Iterable[CR]: ...
+    async def handle_command(self, command: BaseCommand) -> MediatorResponse: ...

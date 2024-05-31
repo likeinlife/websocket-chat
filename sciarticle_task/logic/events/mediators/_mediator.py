@@ -7,10 +7,11 @@ from ._base import BaseEventMediator
 
 ET = tp.TypeVar("ET", bound=BaseEvent)
 ER = tp.TypeVar("ER")
+S = tp.TypeVar("S", bound=BaseEvent)
 
 
 class EventMediator(BaseEventMediator[ET, ER]):
-    def register_event(self, event: type[ET], event_handlers: tp.Iterable[BaseEventHandler[ET, ER]]) -> None:
+    def register_event(self, event: type[ET], event_handlers: tp.Iterable[BaseEventHandler[ET, ER, S]]) -> None:
         self.events_map[event].extend(event_handlers)
 
     async def publish(self, events: tp.Iterable[ET]) -> tp.Iterable[ER]:

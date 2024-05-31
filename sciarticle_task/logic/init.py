@@ -1,25 +1,47 @@
 from domain.events import NewMessageEvent
+from faststream.rabbit import RabbitBroker
 from infra.repositories.chats import IChatRepository
 from infra.repositories.messages import IMessageRepository
 from infra.websockets import BaseWebSocketConnectionManager
 from logic.commands.entities import CreateMessageCommand
 from logic.commands.handlers import CreateMessageCommandHandler
 from logic.commands.mediators import BaseCommandMediator, CommandMediator
-from logic.events.handlers import NewMessageEventHandler
+from logic.events.entities import NewMessageFromBrokerEvent
+from logic.events.handlers import NewMessageEventHandler, NewMessageFromBrokerEventHandler
 from logic.events.mediators import BaseEventMediator, EventMediator
 from logic.queries.entities import FetchMessagesQuery
 from logic.queries.handlers import FetchMessagesQueryHandler
 from logic.queries.mediators import BaseQueryMediator, QueryMediator
+from logic.serializer import BaseEventSerializer
 
 
-def init_event_mediator(connection_manager: BaseWebSocketConnectionManager) -> BaseEventMediator:
+def init_event_mediator(
+    connection_manager: BaseWebSocketConnectionManager,
+    broker: RabbitBroker,
+    message_queue: str,
+    message_exchange: str,
+    serializer: BaseEventSerializer,
+) -> BaseEventMediator:
     """Init event mediator."""
     event_mediator = EventMediator()
+    event_mediator.register_event(
+        NewMessageFromBrokerEvent,
+        [
+            NewMessageFromBrokerEventHandler(
+                serializer=serializer,
+                connection_manager=connection_manager,
+            ),
+        ],
+    )
+
     event_mediator.register_event(
         NewMessageEvent,
         [
             NewMessageEventHandler(
-                connection_manager,
+                serializer=serializer,
+                broker=broker,
+                message_queue=message_queue,
+                message_exchange=message_exchange,
             ),
         ],
     )

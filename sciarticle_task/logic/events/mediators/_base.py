@@ -8,6 +8,7 @@ from logic.events.handlers import BaseEventHandler
 
 ET = tp.TypeVar("ET", bound=BaseEvent)
 ER = tp.TypeVar("ER")
+S = tp.TypeVar("S", bound=BaseEvent)
 
 
 @dataclass
@@ -18,7 +19,7 @@ class BaseEventMediator(abc.ABC, tp.Generic[ET, ER]):
     )
 
     @abc.abstractmethod
-    def register_event(self, event: type[ET], event_handlers: tp.Iterable[BaseEventHandler[ET, ER]]) -> None: ...
+    def register_event(self, event: type[ET], event_handlers: tp.Iterable[BaseEventHandler[ET, ER, S]]) -> None: ...
 
     @abc.abstractmethod
     async def publish(self, events: tp.Iterable[BaseEvent]) -> tp.Iterable[ER]: ...

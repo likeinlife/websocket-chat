@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+import structlog
 from domain.entities._messages import (
     Chat,
     Message,
@@ -19,6 +20,7 @@ from ._base import BaseCommandHandler
 class CreateMessageCommandHandler(BaseCommandHandler[CreateMessageCommand, Chat]):
     chats_repository: IChatRepository
     message_repository: IMessageRepository
+    _logger = structlog.getLogger()
 
     async def handle(self, command: CreateMessageCommand) -> Message:
         try:
@@ -27,6 +29,7 @@ class CreateMessageCommandHandler(BaseCommandHandler[CreateMessageCommand, Chat]
             chat = await self.chats_repository.add(command.chat_id)
 
         message = Message(text=Text(value=command.message_text), chat_id=command.chat_id, user=command.user)
+        self._logger.debug("Handle create_message_command", chat_id=command.chat_id, user=command.user)
         chat.add_message(message)
         await self.message_repository.add(message=message)
         await self._mediator.publish(chat.pull_events())

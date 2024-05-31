@@ -2,7 +2,6 @@ from dataclasses import dataclass
 
 import structlog
 from domain.entities._messages import (
-    Chat,
     Message,
 )
 from domain.values import (
@@ -17,7 +16,7 @@ from ._base import BaseCommandHandler
 
 
 @dataclass
-class CreateMessageCommandHandler(BaseCommandHandler[CreateMessageCommand, Chat]):
+class CreateMessageCommandHandler(BaseCommandHandler[Message]):
     chats_repository: IChatRepository
     message_repository: IMessageRepository
     _logger = structlog.getLogger()

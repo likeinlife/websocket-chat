@@ -1,10 +1,11 @@
+import typing as tp
 from dataclasses import dataclass
 
-from domain.errors import BaseError
 from logic.commands.entities import BaseCommand
+from logic.errors import LogicError
 
 
-class CommandMediatorError(BaseError):
+class CommandMediatorError(LogicError):
     """Base command mediator error."""
 
     @property
@@ -20,4 +21,17 @@ class CommandHandlerNotRegisteredError(CommandMediatorError):
 
     @property
     def message(self) -> str:
-        return "Command handler not registered"
+        return f"Command handler {self.command} not registered"
+
+
+@dataclass
+class WrongCommandHandlerTypeError(CommandMediatorError):
+    """Command mediator not registered error."""
+
+    command: tp.Any
+    need_type: type[BaseCommand]
+    handler: tp.Any
+
+    @property
+    def message(self) -> str:
+        return f"Wrong command handler {self.handler} type. Need - {self.need_type}, got - {self.command}"

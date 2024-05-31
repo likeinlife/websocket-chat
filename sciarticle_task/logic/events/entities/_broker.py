@@ -10,3 +10,7 @@ class NewMessageFromBrokerEvent(BaseEvent):
     message_text: str
     chat_id: str
     message_id: str
+    user_name: str
+
+    def to_text(self) -> str:
+        return f"{self.user_name}: {self.message_text}"

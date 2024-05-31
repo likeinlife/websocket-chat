@@ -27,4 +27,4 @@ class NewMessageFromBrokerEventHandler(BaseEventHandler[NewMessageFromBrokerEven
     connection_manager: BaseWebSocketConnectionManager
 
     async def handle(self, event: NewMessageFromBrokerEvent) -> None:
-        return await self.connection_manager.send_all(event.chat_id, event.message_text.encode())
+        return await self.connection_manager.send_all(event.chat_id, event.to_text().encode())

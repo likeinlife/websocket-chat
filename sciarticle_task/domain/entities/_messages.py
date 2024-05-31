@@ -4,7 +4,9 @@ from dataclasses import (
 )
 
 from domain import events, values
-from domain.entities._base import BaseEntity
+from domain.entities import BaseEntity
+
+from ._user import User
 
 
 @dataclass(eq=False)
@@ -13,6 +15,7 @@ class Message(BaseEntity):
 
     chat_id: str
     text: values.Text
+    user: User
 
 
 @dataclass(eq=False)
@@ -28,5 +31,6 @@ class Chat(BaseEntity):
                 message_text=message.text.as_generic_type(),
                 chat_id=self.id,
                 message_id=message.id,
+                user_name=message.user.name,
             ),
         )

@@ -22,6 +22,7 @@ async def message_consumer(body: dict) -> None:
                 message_text=event.message_text,
                 chat_id=event.chat_id,
                 message_id=event.message_id,
+                user_name=event.user_name,
             ),
         ],
     )

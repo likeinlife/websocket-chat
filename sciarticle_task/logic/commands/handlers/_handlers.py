@@ -26,7 +26,7 @@ class CreateMessageCommandHandler(BaseCommandHandler[CreateMessageCommand, Chat]
         except ChatNotFoundError:
             chat = await self.chats_repository.add(command.chat_id)
 
-        message = Message(text=Text(value=command.message_text), chat_id=command.chat_id)
+        message = Message(text=Text(value=command.message_text), chat_id=command.chat_id, user=command.user)
         chat.add_message(message)
         await self.message_repository.add(message=message)
         await self._mediator.publish(chat.pull_events())

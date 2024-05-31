@@ -13,6 +13,12 @@ class RabbitSettings(BaseSettings):
     user: SecretStr = Field(init=False)
     host: str = Field(init=False)
     port: int = Field(default=5672, init=False)
+    message_exchange: str = Field(default="message-exchange", init=False)
+    message_queue: str = Field(default="message-queue", init=False)
+
+    @property
+    def url(self) -> str:
+        return f"amqp://{self.user.get_secret_value()}:{self.password.get_secret_value()}@{self.host}:{self.port}"
 
 
 class LoggingSettings(BaseSettings):

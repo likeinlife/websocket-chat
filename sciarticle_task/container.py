@@ -3,6 +3,7 @@
 from core import configure_logging, settings
 from dependency_injector import providers as p
 from dependency_injector.containers import DeclarativeContainer
+from infra.brokers import init_rabbitmq_broker
 from infra.repositories.chats import InMemoryChatRepository
 from infra.repositories.messages import InMemoryMessageRepository
 from infra.websockets import WebSocketConnectionManager
@@ -10,25 +11,33 @@ from logic import init
 from logic.mediator import Mediator
 
 
-class LogicContainer(DeclarativeContainer):
-    """Logic container."""
+class InfraContainer(DeclarativeContainer):
+    """Brokers container."""
 
+    broker: p.Singleton = p.Singleton(init_rabbitmq_broker, settings.rabbit.url)
     websockets_manager: p.Singleton = p.Singleton(WebSocketConnectionManager)
     chat_repository: p.Singleton = p.Singleton(InMemoryChatRepository)
     message_repository: p.Singleton = p.Singleton(InMemoryMessageRepository)
+
+
+class LogicContainer(DeclarativeContainer):
+    """Logic container."""
+
+    infra_container: p.DependenciesContainer = p.DependenciesContainer()
+
     event_mediator: p.Singleton = p.Singleton(
         init.init_event_mediator,
-        websockets_manager,
+        infra_container.websockets_manager,
     )
     command_mediator: p.Singleton = p.Singleton(
         init.init_command_mediator,
         event_mediator,
-        chat_repository,
-        message_repository,
+        infra_container.chat_repository,
+        infra_container.message_repository,
     )
     query_mediator: p.Singleton = p.Singleton(
         init.init_query_mediator,
-        message_repository,
+        infra_container.message_repository,
     )
 
     mediator: p.Singleton = p.Singleton(
@@ -53,4 +62,5 @@ class Container(DeclarativeContainer):
     """Main DI container."""
 
     _log = p.Container(LoggingContainer)
-    logic = p.Container(LogicContainer)
+    infra = p.Container(InfraContainer)
+    logic = p.Container(LogicContainer, infra_container=infra)

@@ -13,7 +13,7 @@ router = APIRouter()
 async def get_updates(
     room_id: str,
     websocket: WebSocket,
-    websocket_manager: WebSocketConnectionManager = Depends(Provide[Container.logic.websockets_manager]),
+    websocket_manager: WebSocketConnectionManager = Depends(Provide[Container.infra.websockets_manager]),
 ) -> Response:
     await websocket_manager.accept_connection(websocket, room_id)
 

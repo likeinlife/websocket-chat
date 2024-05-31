@@ -5,7 +5,6 @@ router = APIRouter()
 
 @router.get(
     "/health/",
-    tags=["healthcheck"],
     summary="Проверка состояния сервиса",
     status_code=status.HTTP_200_OK,
 )

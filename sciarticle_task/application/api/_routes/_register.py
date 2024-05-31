@@ -2,10 +2,9 @@ from fastapi import APIRouter, FastAPI
 
 from . import chat, common, ws
 
-router = APIRouter(prefix="/api")
-
 
 def register(app: FastAPI) -> None:
+    router = APIRouter()
     common.register(router)
     chat.register(router)
     ws.register(router)

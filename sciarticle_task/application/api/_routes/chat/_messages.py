@@ -1,10 +1,11 @@
 from container import Container
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import Depends, Response, status
+from faststream.rabbit.fastapi import RabbitRouter
 from logic.commands.entities import CreateMessageCommand
 from logic.mediator import Mediator
 
-router = APIRouter(tags=["chat"])
+router = RabbitRouter()
 
 
 @router.post("/")

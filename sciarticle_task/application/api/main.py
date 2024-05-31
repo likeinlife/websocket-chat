@@ -3,12 +3,10 @@
 import typing as tp
 from contextlib import asynccontextmanager
 
-from container import Container
 from core import settings
-from dependency_injector.wiring import Provide, inject
+from dependency_injector.wiring import inject
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
-from faststream.rabbit import RabbitBroker
 
 from . import _brokers, _container_setup, _error_handler, _middlewares, _routes
 
@@ -17,10 +15,9 @@ from . import _brokers, _container_setup, _error_handler, _middlewares, _routes
 @inject
 async def _lifespan(
     app: FastAPI,  # noqa: ARG001
-    broker: RabbitBroker = Provide[Container.infra.broker],
 ) -> tp.AsyncGenerator:
     container = _container_setup.init_container()
-    _brokers.register(broker)
+    await _brokers.register()
     yield
     _container_setup.shutdown_container(container)
 

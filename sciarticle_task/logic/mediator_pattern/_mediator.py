@@ -35,7 +35,7 @@ class BaseMediator(tp.Generic[EVENT, HANDLER_RETURN, MEDIATOR_RETURN]):
     @abc.abstractmethod
     async def handle(self, event: BaseEvent) -> MEDIATOR_RETURN: ...
 
-    def _get_handler(self, event: EVENT) -> list[IMediatorHandler[EVENT, HANDLER_RETURN]]:
+    def _get_handlers(self, event: EVENT) -> list[IMediatorHandler[EVENT, HANDLER_RETURN]]:
         """Get registered handler for entity.
 
         Raises

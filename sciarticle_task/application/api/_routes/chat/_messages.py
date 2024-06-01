@@ -28,7 +28,7 @@ async def post_message(
     return PostMessageResponse(id=UUID(result.id))
 
 
-@router.get("/message/{message_id}", summary="Fetch message info")
+@router.get("/message/{message_id}/", summary="Fetch message info")
 @inject
 async def fetch_message(
     message_id: str,
@@ -41,7 +41,7 @@ async def fetch_message(
     return MessageInfoSchema.from_domain(result)
 
 
-@router.get("/chat/{chat_id}", summary="Fetch chat messages")
+@router.get("/{chat_id}/", summary="Fetch chat messages")
 @inject
 async def fetch_chat_messages(
     chat_id: str,

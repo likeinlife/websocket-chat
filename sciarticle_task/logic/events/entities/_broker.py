@@ -1,9 +1,6 @@
-from dataclasses import dataclass
-
 from domain.events import BaseEvent
 
 
-@dataclass
 class NewMessageFromBrokerEvent(BaseEvent):
     """New message from broker event."""
 

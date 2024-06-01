@@ -60,6 +60,7 @@ def init_command_mediator(
             message_repository,
         ),
     )
+
     return command_mediator
 
 

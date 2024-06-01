@@ -26,9 +26,9 @@ class BaseMediator(tp.Generic[HANDLER_RETURN, MEDIATOR_RETURN]):
 
         Note: must be at least one handler for each mediator entity.
         """
-        if not isinstance(event, self._allow_event_type):
+        if not issubclass(event, self._allow_event_type):
             raise InvalidEventTypeError(event, self._allow_event_type)
-        command_handler_type = tp.get_type_hints(handler.handle)["command"]
+        command_handler_type = tp.get_type_hints(handler.handle)["event"]
 
         if command_handler_type != event:
             raise HandlerEventTypeError(event, command_handler_type, handler)

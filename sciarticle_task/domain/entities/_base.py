@@ -21,7 +21,7 @@ class BaseEntity:
         """Entity hash base on id."""
         return hash(self.id)
 
-    def __eq__(self, __value: "BaseEntity") -> bool:  # type: ignore  # noqa: PGH003
+    def __eq__(self, __value: "BaseEntity") -> bool:  # type: ignore
         """Compare entity id."""
         return self.id == __value.id
 

@@ -57,6 +57,8 @@ ignore = [
     "D100",
     # Allow public method withoud docstring
     "D102",
+    # Allow type: ignore
+    "PGH003",
 ]
 exclude = []
 

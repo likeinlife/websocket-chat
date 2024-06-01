@@ -5,12 +5,14 @@ from domain.events import NewMessageEvent
 from faststream.rabbit import RabbitBroker
 from infra.websockets import BaseWebSocketConnectionManager
 from logic.events.entities import NewMessageFromBrokerEvent
+from logic.serializer import BaseEventSerializer
 
 from ._base import BaseEventHandler
 
 
 @dataclass
-class NewMessageEventHandler(BaseEventHandler[NewMessageEvent, None, NewMessageEvent]):
+class NewMessageEventHandler(BaseEventHandler[NewMessageEvent, None]):
+    serializer: BaseEventSerializer
     broker: RabbitBroker
     message_queue: str
     message_exchange: str
@@ -26,7 +28,7 @@ class NewMessageEventHandler(BaseEventHandler[NewMessageEvent, None, NewMessageE
 
 
 @dataclass
-class NewMessageFromBrokerEventHandler(BaseEventHandler[NewMessageFromBrokerEvent, None, NewMessageFromBrokerEvent]):
+class NewMessageFromBrokerEventHandler(BaseEventHandler[NewMessageFromBrokerEvent, None]):
     connection_manager: BaseWebSocketConnectionManager
     _logger = structlog.getLogger()
 

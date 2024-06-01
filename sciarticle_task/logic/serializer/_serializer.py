@@ -1,32 +1,23 @@
 import typing as tp
-from dataclasses import asdict
 
-from domain.events import BaseEvent, NewMessageEvent
-from logic.events.entities import NewMessageFromBrokerEvent
+from domain.events import BaseEvent
+from pydantic import TypeAdapter, ValidationError
 
 from ._base import BaseEventSerializer
-from ._errors import NoTypeFieldInEventError, UnknownEventError
+from ._errors import UnknownEventTypeError
 
 T = tp.TypeVar("T", bound=BaseEvent)
 
-event_list: list[type[BaseEvent]] = [NewMessageEvent, NewMessageFromBrokerEvent]
 
-event_dict: dict[str, type[BaseEvent]] = {cls.__name__: cls for cls in event_list}
-
-
-class EventSerializer(BaseEventSerializer, tp.Generic[T]):
+class EventSerializer(BaseEventSerializer):
     type_field: tp.Final = "type"
 
-    def serialize(self, event: T) -> dict[str, tp.Any]:
-        data = asdict(event)
+    def serialize(self, event: BaseEvent) -> dict[str, tp.Any]:
+        data = event.model_dump(mode="json")
         return {**data, self.type_field: event.__class__.__name__}
 
-    def deserialize(self, data: dict[str, tp.Any]) -> T:
-        event_type = data.get(self.type_field)
-        if not event_type:
-            raise NoTypeFieldInEventError(self.type_field)
-        event = event_dict.get(event_type)
-        if not event:
-            raise UnknownEventError(event_type)
-
-        return event.from_dict(data)  # type: ignore  # noqa: PGH003
+    def deserialize(self, data: dict[str, tp.Any], event_type: type[T]) -> T:
+        try:
+            return TypeAdapter(event_type).validate_python(data)
+        except ValidationError as e:
+            raise UnknownEventTypeError(event_type.__name__) from e

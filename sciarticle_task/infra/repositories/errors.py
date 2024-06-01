@@ -20,3 +20,14 @@ class ChatNotFoundError(BaseError):
     @property
     def message(self) -> str:
         return f"Chat not found: {self.chat_id}"
+
+
+@dataclass
+class MessageNotFoundError(BaseError):
+    """Requested message not found."""
+
+    message_id: str
+
+    @property
+    def message(self) -> str:
+        return f"Message not found: {self.message_id}"

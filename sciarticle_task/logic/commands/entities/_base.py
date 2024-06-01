@@ -1,4 +1,4 @@
-from logic.mediator_pattern import BaseMediatorEntity
+from domain.events import BaseEvent
 
 
-class BaseCommand(BaseMediatorEntity): ...
+class BaseCommand(BaseEvent): ...

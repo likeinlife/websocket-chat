@@ -7,29 +7,30 @@ participant api as "API"
 participant mediator as "Mediator"
 participant command_handler as "CommandHandler"
 participant event_handler as "EventHandler"
-participant broker as "MessageBroker" #cyan
+participant consumer as "Consumer" #LightGreen
+participant broker as "MessageBroker" #LightBlue
 participant websocket_manager as "WebsocketManager"
 participant websocket as "Websocket"
-actor room as "Room"
 
-user -> api ++: POST /message/
+user -> api ++: POST message
 
 api -> mediator: PostMessageCommand
 
-mediator -> command_handler: message, room_id
+mediator -> command_handler
 
 command_handler -> event_handler
 
 event_handler -> broker
 
-broker -> event_handler
+api -> user --: HTTP 200, message_id
 
-event_handler -> websocket_manager: message, room_id
+broker -> consumer
+
+consumer -> event_handler
+
+event_handler -> websocket_manager
 
 websocket_manager -> websocket: message
 
-websocket -> room: message
-
-api -> user --: HTTP 201: CREATED, command_id
 
 @enduml

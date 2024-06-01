@@ -17,6 +17,7 @@ lint:
 
 .PHONY: app
 app:
+	${MAKE} freeze
 	${DC} -f ${APP_FILE} ${ENV} up --build -d
 
 .PHONY: app-local

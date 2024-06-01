@@ -16,7 +16,7 @@ from ._base import BaseCommandHandler
 
 
 @dataclass
-class CreateMessageCommandHandler(BaseCommandHandler[Message]):
+class CreateMessageCommandHandler(BaseCommandHandler[CreateMessageCommand, Message]):
     chats_repository: IChatRepository
     message_repository: IMessageRepository
     _logger = structlog.getLogger()
@@ -31,6 +31,6 @@ class CreateMessageCommandHandler(BaseCommandHandler[Message]):
         self._logger.debug("Handle create_message_command", chat_id=command.chat_id, user=command.user)
         chat.add_message(message)
         await self.message_repository.add(message=message)
-        await self._mediator.publish(chat.pull_events())
+        [await self.event_mediator.handle(event) for event in chat.pull_events()]
 
         return message

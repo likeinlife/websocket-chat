@@ -10,16 +10,7 @@ class SerializerError(BaseError):
 
 
 @dataclass
-class NoTypeFieldInEventError(SerializerError):
-    type_field_name: str
-
-    @property
-    def message(self) -> str:
-        return "Event doesn't have 'type' field"
-
-
-@dataclass
-class UnknownEventError(SerializerError):
+class UnknownEventTypeError(SerializerError):
     type_: str
 
     @property

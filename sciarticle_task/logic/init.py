@@ -8,7 +8,7 @@ from logic.commands.handlers import CreateMessageCommandHandler
 from logic.commands.mediator import CommandMediator
 from logic.events.entities import NewMessageFromBrokerEvent
 from logic.events.handlers import NewMessageEventHandler, NewMessageFromBrokerEventHandler
-from logic.events.mediators import BaseEventMediator, EventMediator
+from logic.events.mediator import EventMediator
 from logic.mediator_pattern import BaseMediator
 from logic.queries.entities import FetchMessagesQuery
 from logic.queries.handlers import FetchMessagesQueryHandler
@@ -22,30 +22,26 @@ def init_event_mediator(
     message_queue: str,
     message_exchange: str,
     serializer: BaseEventSerializer,
-) -> BaseEventMediator:
+) -> BaseMediator:
     """Init event mediator."""
     event_mediator = EventMediator()
-    event_mediator.register_event(
+    event_mediator.register(
         NewMessageFromBrokerEvent,
-        [
-            NewMessageFromBrokerEventHandler(
-                serializer=serializer,
-                connection_manager=connection_manager,
-            ),
-        ],
+        NewMessageFromBrokerEventHandler(
+            connection_manager=connection_manager,
+        ),
     )
 
-    event_mediator.register_event(
+    event_mediator.register(
         NewMessageEvent,
-        [
-            NewMessageEventHandler(
-                serializer=serializer,
-                broker=broker,
-                message_queue=message_queue,
-                message_exchange=message_exchange,
-            ),
-        ],
+        NewMessageEventHandler(
+            serializer=serializer,
+            broker=broker,
+            message_queue=message_queue,
+            message_exchange=message_exchange,
+        ),
     )
+
     return event_mediator
 
 

@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
+from domain.events import BaseEvent
 from logic.errors import LogicError
 
-from ._entity import BaseMediatorEntity
 from ._handler import IMediatorHandler
 
 
@@ -18,7 +18,7 @@ class MediatorError(LogicError):
 class HandlerNotRegisteredError(MediatorError):
     """Mediator not registered error."""
 
-    mediator_entity: type[BaseMediatorEntity]
+    mediator_entity: type[BaseEvent]
 
     @property
     def message(self) -> str:
@@ -26,13 +26,25 @@ class HandlerNotRegisteredError(MediatorError):
 
 
 @dataclass
-class HandlerEntityTypeError(MediatorError):
+class HandlerEventTypeError(MediatorError):
     """Wrong mediator entity type."""
 
-    got_mediator_entity: type[BaseMediatorEntity]
-    need_entity: type[BaseMediatorEntity]
+    got_event: type[BaseEvent]
+    need_event: type[BaseEvent]
     handler: IMediatorHandler
 
     @property
     def message(self) -> str:
-        return f"Wrong command handler {self.handler} type. Need - {self.need_entity}, got - {self.got_mediator_entity}"
+        return f"Wrong command handler {self.handler} type. Need - {self.need_event}, got - {self.got_event}"
+
+
+@dataclass
+class InvalidEventTypeError(MediatorError):
+    """Invalid mediator event type."""
+
+    got_event: type[BaseEvent]
+    need_event: type[BaseEvent]
+
+    @property
+    def message(self) -> str:
+        return f"Invalid mediator event type {self.got_event} type. Need - {self.need_event}"

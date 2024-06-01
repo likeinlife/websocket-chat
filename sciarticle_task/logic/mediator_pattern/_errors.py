@@ -6,8 +6,8 @@ from ._entity import BaseMediatorEntity
 from ._handler import IMediatorHandler
 
 
-class CommandMediatorError(LogicError):
-    """Base command mediator error."""
+class MediatorError(LogicError):
+    """Base mediator error."""
 
     @property
     def message(self) -> str:
@@ -15,8 +15,8 @@ class CommandMediatorError(LogicError):
 
 
 @dataclass
-class CommandHandlerNotRegisteredError(CommandMediatorError):
-    """Command mediator not registered error."""
+class HandlerNotRegisteredError(MediatorError):
+    """Mediator not registered error."""
 
     mediator_entity: type[BaseMediatorEntity]
 
@@ -26,8 +26,8 @@ class CommandHandlerNotRegisteredError(CommandMediatorError):
 
 
 @dataclass
-class WrongEntityHandlerTypeError(CommandMediatorError):
-    """Command mediator not registered error."""
+class HandlerEntityTypeError(MediatorError):
+    """Wrong mediator entity type."""
 
     got_mediator_entity: type[BaseMediatorEntity]
     need_entity: type[BaseMediatorEntity]

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .commands.mediators import BaseCommandMediator
+from .commands.mediator import CommandMediator
 from .events.mediators import BaseEventMediator
 from .queries.mediators import BaseQueryMediator
 
@@ -11,4 +11,4 @@ class Mediator:
 
     query_mediator: BaseQueryMediator
     event_mediator: BaseEventMediator
-    command_mediator: BaseCommandMediator
+    command_mediator: CommandMediator

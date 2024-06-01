@@ -1,7 +1,4 @@
-import uuid
-from dataclasses import dataclass, field
+from logic.mediator_pattern import BaseMediatorEntity
 
 
-@dataclass
-class BaseCommand:
-    id: uuid.UUID = field(default_factory=uuid.uuid4, kw_only=True)
+class BaseCommand(BaseMediatorEntity): ...

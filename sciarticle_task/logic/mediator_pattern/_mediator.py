@@ -4,7 +4,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 
 from ._entity import BaseMediatorEntity
-from ._errors import WrongEntityHandlerTypeError
+from ._errors import HandlerEntityTypeError, HandlerNotRegisteredError
 from ._handler import IMediatorHandler
 
 ENTITY = tp.TypeVar("ENTITY", bound=BaseMediatorEntity)
@@ -27,9 +27,23 @@ class BaseMediator(tp.Generic[ENTITY, HANDLER_RETURN, MEDIATOR_RETURN]):
         command_handler_type = tp.get_type_hints(handler.handle)["command"]
 
         if command_handler_type != entity:
-            raise WrongEntityHandlerTypeError(entity, command_handler_type, handler)
+            raise HandlerEntityTypeError(entity, command_handler_type, handler)
 
         self.handler_map[entity].append(handler)
 
     @abc.abstractmethod
     async def handle(self, entity: BaseMediatorEntity) -> MEDIATOR_RETURN: ...
+
+    def _get_handler(self, entity: ENTITY) -> list[IMediatorHandler[ENTITY, HANDLER_RETURN]]:
+        """Get registered handler for entity.
+
+        Raises
+        ------
+        HandlerNotRegisteredError if not found.
+
+        """
+        entity_type = type(entity)
+        handlers = self.handler_map.get(entity_type)
+        if not handlers:
+            raise HandlerNotRegisteredError(entity_type)
+        return handlers

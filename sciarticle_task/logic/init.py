@@ -5,10 +5,11 @@ from infra.repositories.messages import IMessageRepository
 from infra.websockets import BaseWebSocketConnectionManager
 from logic.commands.entities import CreateMessageCommand
 from logic.commands.handlers import CreateMessageCommandHandler
-from logic.commands.mediators import BaseCommandMediator, CommandMediator
+from logic.commands.mediator import CommandMediator
 from logic.events.entities import NewMessageFromBrokerEvent
 from logic.events.handlers import NewMessageEventHandler, NewMessageFromBrokerEventHandler
 from logic.events.mediators import BaseEventMediator, EventMediator
+from logic.mediator_pattern import BaseMediator
 from logic.queries.entities import FetchMessagesQuery
 from logic.queries.handlers import FetchMessagesQueryHandler
 from logic.queries.mediators import BaseQueryMediator, QueryMediator
@@ -52,18 +53,16 @@ def init_command_mediator(
     event_mediator: EventMediator,
     chat_repository: IChatRepository,
     message_repository: IMessageRepository,
-) -> BaseCommandMediator:
+) -> BaseMediator:
     """Init command mediator."""
     command_mediator = CommandMediator()
-    command_mediator.register_command(
+    command_mediator.register(
         CreateMessageCommand,
-        [
-            CreateMessageCommandHandler(
-                event_mediator,
-                chat_repository,
-                message_repository,
-            ),
-        ],
+        CreateMessageCommandHandler(
+            event_mediator,
+            chat_repository,
+            message_repository,
+        ),
     )
     return command_mediator
 

@@ -22,7 +22,7 @@ command_handler -> event_handler
 
 event_handler -> broker
 
-api -> user --: HTTP 200, message_id
+api -> user --: HTTP 200: message_id
 
 broker -> consumer
 

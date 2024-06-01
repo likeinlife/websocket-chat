@@ -86,3 +86,11 @@ Swagger находится на `http://127.0.0.1:8000/api/openapi`.
 # Структура отправки сообщения
 
 ![post_message_pipeline](./diagrams/out/post_message.png)
+
+# Скриншоты
+
+![](./static/swagger.png)
+![](./static/endpoint.png)
+![](./static/response.png)
+![](./static/message_id.png)
+![](./static/websocket.png)

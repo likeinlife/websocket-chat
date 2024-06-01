@@ -10,9 +10,6 @@ from logic.events.entities import NewMessageFromBrokerEvent
 from logic.events.handlers import NewMessageEventHandler, NewMessageFromBrokerEventHandler
 from logic.events.mediator import EventMediator
 from logic.mediator_pattern import BaseMediator
-from logic.queries.entities import FetchMessagesQuery
-from logic.queries.handlers import FetchMessagesQueryHandler
-from logic.queries.mediators import BaseQueryMediator, QueryMediator
 from logic.serializer import BaseEventSerializer
 
 
@@ -62,17 +59,3 @@ def init_command_mediator(
     )
 
     return command_mediator
-
-
-def init_query_mediator(
-    message_repository: IMessageRepository,
-) -> BaseQueryMediator:
-    """Init query mediator."""
-    query_mediator = QueryMediator()
-    query_mediator.register_query(
-        FetchMessagesQuery,
-        FetchMessagesQueryHandler(
-            message_repository,
-        ),
-    )
-    return query_mediator

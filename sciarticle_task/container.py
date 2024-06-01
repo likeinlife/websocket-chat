@@ -11,6 +11,7 @@ from infra.websockets import WebSocketConnectionManager
 from logic import init
 from logic.mediator import Mediator
 from logic.serializer import EventSerializer
+from logic.usecases import MessageUseCases
 
 
 class InfraContainer(DeclarativeContainer):
@@ -43,16 +44,15 @@ class LogicContainer(DeclarativeContainer):
         infra_container.chat_repository,
         infra_container.message_repository,
     )
-    query_mediator: p.Singleton = p.Singleton(
-        init.init_query_mediator,
-        infra_container.message_repository,
-    )
-
     mediator: p.Singleton = p.Singleton(
         Mediator,
-        query_mediator=query_mediator,
         event_mediator=event_mediator,
         command_mediator=command_mediator,
+    )
+    use_cases: p.Singleton = p.Singleton(
+        MessageUseCases,
+        infra_container.message_repository,
+        infra_container.chat_repository,
     )
 
 

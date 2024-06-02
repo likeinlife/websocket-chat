@@ -7,8 +7,9 @@ from domain.entities import User
 from fastapi import Depends, HTTPException
 from faststream.rabbit.fastapi import RabbitRouter
 from logic.commands.entities import CreateMessageCommand
+from logic.interactors import MessageInteractor
 from logic.mediator import Mediator
-from logic.usecases import ChatNotFoundError, MessageUseCases
+from logic.usecases import ChatNotFoundError
 
 from ._schemas import MessageInfoSchema, PostMessageRequest, PostMessageResponse
 
@@ -32,9 +33,9 @@ async def post_message(
 @inject
 async def fetch_message(
     message_id: str,
-    use_cases: MessageUseCases = Depends(Provide[Container.logic.use_cases]),
+    message_interactor: MessageInteractor = Depends(Provide[Container.logic.message_interactor]),
 ) -> MessageInfoSchema:
-    result = await use_cases.fetch_message(message_id=message_id)
+    result = await message_interactor.fetch_message(message_id=message_id)
     if not result:
         raise HTTPException(status_code=404, detail="Message not found")
 
@@ -45,10 +46,10 @@ async def fetch_message(
 @inject
 async def fetch_chat_messages(
     chat_id: str,
-    use_cases: MessageUseCases = Depends(Provide[Container.logic.use_cases]),
+    message_interactor: MessageInteractor = Depends(Provide[Container.logic.message_interactor]),
 ) -> list[MessageInfoSchema]:
     try:
-        result = await use_cases.fetch_chat_messages(chat_id=chat_id)
+        result = await message_interactor.fetch_chat_messages(chat_id=chat_id)
         return [MessageInfoSchema.from_domain(message) for message in result]
     except ChatNotFoundError:
         raise HTTPException(status_code=404, detail="Chat not found")  # noqa: B904

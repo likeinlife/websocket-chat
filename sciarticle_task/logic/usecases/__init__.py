@@ -1,6 +1,8 @@
 """Use cases."""
 
-from ._errors import ChatNotFoundError
-from ._messages import MessageUseCases
+from ._chats import FetchChatMessagesUseCase
+from ._errors import ChatNotFoundError, UseCaseError
+from ._interface import IUseCase
+from ._messages import FetchMessageUseCase
 
-__all__ = ("MessageUseCases", "ChatNotFoundError")
+__all__ = ("FetchMessageUseCase", "ChatNotFoundError", "UseCaseError", "IUseCase", "FetchChatMessagesUseCase")

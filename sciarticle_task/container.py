@@ -9,9 +9,9 @@ from infra.repositories.chats import InMemoryChatRepository
 from infra.repositories.messages import InMemoryMessageRepository
 from infra.websockets import WebSocketConnectionManager
 from logic import init
+from logic.interactors import MessageInteractor
 from logic.mediator import Mediator
 from logic.serializer import EventSerializer
-from logic.usecases import MessageUseCases
 
 
 class InfraContainer(DeclarativeContainer):
@@ -49,10 +49,9 @@ class LogicContainer(DeclarativeContainer):
         event_mediator=event_mediator,
         command_mediator=command_mediator,
     )
-    use_cases: p.Singleton = p.Singleton(
-        MessageUseCases,
+    message_interactor: p.Singleton = p.Singleton(
+        MessageInteractor,
         infra_container.message_repository,
-        infra_container.chat_repository,
     )
 
 

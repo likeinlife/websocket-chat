@@ -10,7 +10,7 @@ from logic.events.entities import NewMessageFromBrokerEvent
 from logic.events.handlers import NewMessageEventHandler, NewMessageFromBrokerEventHandler
 from logic.events.mediator import EventMediator
 from logic.mediator_pattern import BaseMediator
-from logic.serializer import BaseEventSerializer
+from logic.serializers import BaseEventSerializer
 
 
 def init_event_mediator(

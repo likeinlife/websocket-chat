@@ -56,7 +56,7 @@ Swagger находится на `http://127.0.0.1:8000/api/openapi`.
 
 1. Доменная область - `domain`. В ней определены основные сущности, ошибки, события, value-objects.
 2. Инфрастуктура - `infra`. В нем определена логика взаимодействия с внешними системами: websockets, репозитории
-3. Логика - `logic`. В нем содержится вся основная бизнес-логика: mediator, use-cases, interactors, serializer.
+3. Логика - `logic`. В нем содержится вся основная бизнес-логика: mediator, use-cases, interactors, serializers.
 4. Представления - `application`. В нем содержится, соответственно, вся логика работы с пользователем: FastAPI и FastStream
 5. DI контейнер - `container.py`.
 

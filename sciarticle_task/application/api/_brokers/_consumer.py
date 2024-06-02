@@ -3,7 +3,7 @@ from dependency_injector.wiring import Provide, inject
 from domain.events import NewMessageEvent
 from logic.events.entities import NewMessageFromBrokerEvent
 from logic.mediator import Mediator
-from logic.serializer import BaseEventSerializer
+from logic.serializers import BaseEventSerializer
 
 mediator: Mediator = Provide[Container.logic.mediator]
 serializer: BaseEventSerializer = Provide[Container.logic.serializer]

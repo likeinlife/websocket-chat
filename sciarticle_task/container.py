@@ -11,7 +11,7 @@ from infra.websockets import WebSocketConnectionManager
 from logic import init
 from logic.interactors import MessageInteractor
 from logic.mediator import Mediator
-from logic.serializer import EventSerializer
+from logic.serializers import EventSerializer
 
 
 class InfraContainer(DeclarativeContainer):

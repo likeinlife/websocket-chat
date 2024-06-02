@@ -5,7 +5,7 @@ from domain.events import NewMessageEvent
 from faststream.rabbit import RabbitBroker
 from infra.websockets import BaseWebSocketConnectionManager
 from logic.events.entities import NewMessageFromBrokerEvent
-from logic.serializer import BaseEventSerializer
+from logic.serializers import BaseEventSerializer
 
 from ._base import BaseEventHandler
 

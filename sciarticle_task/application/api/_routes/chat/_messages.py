@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, status
 from faststream.rabbit.fastapi import RabbitRouter
 
 from application.api.dependencies import user
@@ -17,7 +17,13 @@ from ._schemas import MessageInfoSchema, PostMessageRequest, PostMessageResponse
 router = RabbitRouter()
 
 
-@router.post("/", summary="Post message to chat room")
+@router.post(
+    "/",
+    summary="Post message to chat room",
+    responses={
+        status.HTTP_201_CREATED: {"model": PostMessageResponse},
+    },
+)
 @inject
 async def post_message(
     body: PostMessageRequest,

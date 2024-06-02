@@ -1,11 +1,13 @@
 """DI container."""
 
 import aiojobs
-from core import configure_logging, settings
 from dependency_injector import providers as p
 from dependency_injector.containers import DeclarativeContainer
+
+from core import configure_logging, settings
 from infra.brokers import init_rabbitmq_broker
 from infra.repositories.chats import InMemoryChatRepository
+from infra.repositories.events import InMemoryEventRepository
 from infra.repositories.messages import InMemoryMessageRepository
 from infra.websockets import WebSocketConnectionManager
 from logic import init
@@ -22,6 +24,7 @@ class InfraContainer(DeclarativeContainer):
     websockets_manager: p.Singleton = p.Singleton(WebSocketConnectionManager)
     chat_repository: p.Singleton = p.Singleton(InMemoryChatRepository)
     message_repository: p.Singleton = p.Singleton(InMemoryMessageRepository)
+    event_repository: p.Singleton = p.Singleton(InMemoryEventRepository)
 
 
 class LogicContainer(DeclarativeContainer):
@@ -32,17 +35,19 @@ class LogicContainer(DeclarativeContainer):
 
     event_mediator: p.Singleton = p.Singleton(
         init.init_event_mediator,
-        infra_container.websockets_manager,
-        infra_container.broker,
-        settings.rabbit.message_queue,
-        settings.rabbit.message_exchange,
-        serializer,
+        connection_manager=infra_container.websockets_manager,
+        broker=infra_container.broker,
+        message_queue=settings.rabbit.message_queue,
+        message_exchange=settings.rabbit.message_exchange,
+        event_repository=infra_container.event_repository,
+        serializer=serializer,
     )
     command_mediator: p.Singleton = p.Singleton(
         init.init_command_mediator,
-        event_mediator,
-        infra_container.chat_repository,
-        infra_container.message_repository,
+        event_mediator=event_mediator,
+        chat_repository=infra_container.chat_repository,
+        message_repository=infra_container.message_repository,
+        event_repository=infra_container.event_repository,
     )
     mediator: p.Singleton = p.Singleton(
         Mediator,
@@ -51,7 +56,7 @@ class LogicContainer(DeclarativeContainer):
     )
     message_interactor: p.Singleton = p.Singleton(
         MessageInteractor,
-        infra_container.message_repository,
+        message_repo=infra_container.message_repository,
     )
 
 

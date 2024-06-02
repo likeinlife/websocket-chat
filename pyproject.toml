@@ -75,6 +75,9 @@ extend-immutable-calls = [
 "__init__.py" = []
 "tests/**/*.py" = ["D", "S", "ANN"]
 
+[tool.ruff.lint.isort]
+known-local-folder = ["application", "core", "domain", "infra", "logic"]
+
 
 [tool.mypy]
 ignore_missing_imports = true

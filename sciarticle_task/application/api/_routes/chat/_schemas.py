@@ -1,8 +1,9 @@
 import datetime as dt
 import uuid
 
-from domain.entities import Message
 from pydantic import BaseModel
+
+from domain.entities import Message
 
 
 class PostMessageRequest(BaseModel):

@@ -76,7 +76,7 @@ extend-immutable-calls = [
 "tests/**/*.py" = ["D", "S", "ANN"]
 
 [tool.ruff.lint.isort]
-known-local-folder = ["application", "core", "domain", "infra", "logic"]
+known-first-party = ["application", "core", "domain", "infra", "logic"]
 
 
 [tool.mypy]

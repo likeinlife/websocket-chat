@@ -1,9 +1,10 @@
 import typing as tp
 from dataclasses import dataclass
 
-from ._handler import IMediatorHandler
 from domain.events import BaseEvent
 from infra.repositories.events import IEventRepository
+
+from ._handler import IMediatorHandler
 
 EVENT = tp.TypeVar("EVENT", bound=BaseEvent)
 HANDLER_RETURN = tp.TypeVar("HANDLER_RETURN")

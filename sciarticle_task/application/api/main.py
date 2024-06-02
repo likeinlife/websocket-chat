@@ -3,10 +3,11 @@
 import typing as tp
 from contextlib import asynccontextmanager
 
-from core import settings
 from dependency_injector.wiring import inject
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
+
+from core import settings
 
 from . import _brokers, _container_setup, _error_handler, _middlewares, _routes
 

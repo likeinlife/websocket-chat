@@ -1,8 +1,9 @@
 import uuid
 from dataclasses import dataclass, field
 
-from ._base import IEventRepository
 from domain.events import BaseEvent
+
+from ._base import IEventRepository
 
 
 @dataclass

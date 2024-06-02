@@ -1,11 +1,12 @@
 from uuid import UUID
 
-from application.api.dependencies import user
 from container import Container
 from dependency_injector.wiring import Provide, inject
-from domain.entities import User
 from fastapi import Depends, HTTPException
 from faststream.rabbit.fastapi import RabbitRouter
+
+from application.api.dependencies import user
+from domain.entities import User
 from logic.commands.entities import CreateMessageCommand
 from logic.interactors import MessageInteractor
 from logic.mediator import Mediator

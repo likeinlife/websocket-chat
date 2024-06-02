@@ -1,7 +1,8 @@
 import typing as tp
 
-from domain.entities import User
 from fastapi import Body
+
+from domain.entities import User
 
 
 def get_user(name: tp.Annotated[str, Body()]) -> User:

@@ -1,8 +1,9 @@
 from aiojobs import Scheduler
 from container import Container
-from core import settings
 from dependency_injector.wiring import Provide, inject
 from faststream.rabbit import RabbitBroker, RabbitExchange, RabbitQueue
+
+from core import settings
 from infra.brokers import init_faststream
 
 from ._consumer import message_consumer

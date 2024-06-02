@@ -1,7 +1,8 @@
 import typing as tp
 
-from domain.events import BaseEvent
 from pydantic import TypeAdapter, ValidationError
+
+from domain.events import BaseEvent
 
 from ._base import BaseEventSerializer
 from ._errors import UnknownEventTypeError

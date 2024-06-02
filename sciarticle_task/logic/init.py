@@ -1,6 +1,9 @@
-from domain.events import NewMessageEvent
 from faststream.rabbit import RabbitBroker
+
+from domain.entities import Message
+from domain.events import NewMessageEvent
 from infra.repositories.chats import IChatRepository
+from infra.repositories.events import IEventRepository
 from infra.repositories.messages import IMessageRepository
 from infra.websockets import BaseWebSocketConnectionManager
 from logic.commands.entities import CreateMessageCommand
@@ -9,33 +12,42 @@ from logic.commands.mediator import CommandMediator
 from logic.events.entities import NewMessageFromBrokerEvent
 from logic.events.handlers import NewMessageEventHandler, NewMessageFromBrokerEventHandler
 from logic.events.mediator import EventMediator
-from logic.mediator_pattern import BaseMediator
+from logic.mediator_pattern import BaseMediator, LoggingEventHandlerProxy
 from logic.serializers import BaseEventSerializer
 
 
-def init_event_mediator(
+def init_event_mediator(  # noqa: PLR0913
     connection_manager: BaseWebSocketConnectionManager,
     broker: RabbitBroker,
     message_queue: str,
     message_exchange: str,
+    event_repository: IEventRepository,
     serializer: BaseEventSerializer,
 ) -> BaseMediator:
     """Init event mediator."""
     event_mediator = EventMediator()
     event_mediator.register(
         NewMessageFromBrokerEvent,
-        NewMessageFromBrokerEventHandler(
-            connection_manager=connection_manager,
+        LoggingEventHandlerProxy(
+            NewMessageFromBrokerEventHandler(
+                event_type=NewMessageFromBrokerEvent,
+                connection_manager=connection_manager,
+            ),
+            event_repo=event_repository,
         ),
     )
 
     event_mediator.register(
         NewMessageEvent,
-        NewMessageEventHandler(
-            serializer=serializer,
-            broker=broker,
-            message_queue=message_queue,
-            message_exchange=message_exchange,
+        LoggingEventHandlerProxy(
+            NewMessageEventHandler(
+                event_type=NewMessageEvent,
+                serializer=serializer,
+                broker=broker,
+                message_queue=message_queue,
+                message_exchange=message_exchange,
+            ),
+            event_repo=event_repository,
         ),
     )
 
@@ -46,15 +58,20 @@ def init_command_mediator(
     event_mediator: EventMediator,
     chat_repository: IChatRepository,
     message_repository: IMessageRepository,
+    event_repository: IEventRepository,
 ) -> BaseMediator:
     """Init command mediator."""
     command_mediator = CommandMediator()
     command_mediator.register(
         CreateMessageCommand,
-        CreateMessageCommandHandler(
-            event_mediator,
-            chat_repository,
-            message_repository,
+        LoggingEventHandlerProxy[CreateMessageCommand, Message](
+            CreateMessageCommandHandler(
+                event_type=CreateMessageCommand,
+                event_mediator=event_mediator,
+                chats_repository=chat_repository,
+                message_repository=message_repository,
+            ),
+            event_repo=event_repository,
         ),
     )
 

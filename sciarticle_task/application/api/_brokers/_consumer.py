@@ -1,5 +1,6 @@
 from container import Container
 from dependency_injector.wiring import Provide, inject
+
 from domain.events import NewMessageEvent
 from logic.events.entities import NewMessageFromBrokerEvent
 from logic.mediator import Mediator

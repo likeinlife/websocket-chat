@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 import structlog
+
 from domain.entities._messages import (
     Message,
 )

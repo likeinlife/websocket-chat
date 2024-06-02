@@ -28,7 +28,7 @@ jobs:
     - name: Lint with ruff
       uses: chartboost/ruff-action@v1
       with:
-        src: "src"
+        src: "sciarticle_task"
         version: 0.1.13
     - name: Test with pytest
       run: |

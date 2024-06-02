@@ -11,7 +11,7 @@ from infra.repositories.events import InMemoryEventRepository
 from infra.repositories.messages import InMemoryMessageRepository
 from infra.websockets import WebSocketConnectionManager
 from logic import init
-from logic.interactors import MessageInteractor
+from logic.interactors import EventsInteractor, MessageInteractor
 from logic.mediator import Mediator
 from logic.serializers import EventSerializer
 
@@ -57,6 +57,10 @@ class LogicContainer(DeclarativeContainer):
     message_interactor: p.Singleton = p.Singleton(
         MessageInteractor,
         message_repo=infra_container.message_repository,
+    )
+    event_interactor: p.Singleton = p.Singleton(
+        EventsInteractor,
+        event_repo=infra_container.event_repository,
     )
 
 

@@ -1,3 +1,4 @@
+import typing as tp
 import uuid
 from dataclasses import dataclass, field
 
@@ -15,3 +16,6 @@ class InMemoryEventRepository(IEventRepository):
 
     async def fetch(self, event_id: uuid.UUID) -> BaseEvent | None:
         return self._events.get(event_id)
+
+    async def fetch_list(self) -> tp.Iterable[BaseEvent]:
+        return self._events.values()

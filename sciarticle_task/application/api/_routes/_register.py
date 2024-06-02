@@ -1,6 +1,6 @@
 from fastapi import APIRouter, FastAPI
 
-from . import chat, common, ws
+from . import chat, common, events, ws
 
 
 def register(app: FastAPI) -> None:
@@ -8,5 +8,6 @@ def register(app: FastAPI) -> None:
     common.register(router)
     chat.register(router)
     ws.register(router)
+    events.register(router)
 
     app.include_router(router)

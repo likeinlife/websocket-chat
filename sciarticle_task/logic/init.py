@@ -1,5 +1,6 @@
 from faststream.rabbit import RabbitBroker
 
+from domain.entities import Message
 from domain.events import NewMessageEvent
 from infra.repositories.chats import IChatRepository
 from infra.repositories.events import IEventRepository
@@ -29,6 +30,7 @@ def init_event_mediator(  # noqa: PLR0913
         NewMessageFromBrokerEvent,
         LoggingEventHandlerProxy(
             NewMessageFromBrokerEventHandler(
+                event_type=NewMessageFromBrokerEvent,
                 connection_manager=connection_manager,
             ),
             event_repo=event_repository,
@@ -39,6 +41,7 @@ def init_event_mediator(  # noqa: PLR0913
         NewMessageEvent,
         LoggingEventHandlerProxy(
             NewMessageEventHandler(
+                event_type=NewMessageEvent,
                 serializer=serializer,
                 broker=broker,
                 message_queue=message_queue,
@@ -61,11 +64,12 @@ def init_command_mediator(
     command_mediator = CommandMediator()
     command_mediator.register(
         CreateMessageCommand,
-        LoggingEventHandlerProxy(
+        LoggingEventHandlerProxy[CreateMessageCommand, Message](
             CreateMessageCommandHandler(
-                event_mediator,
-                chat_repository,
-                message_repository,
+                event_type=CreateMessageCommand,
+                event_mediator=event_mediator,
+                chats_repository=chat_repository,
+                message_repository=message_repository,
             ),
             event_repo=event_repository,
         ),

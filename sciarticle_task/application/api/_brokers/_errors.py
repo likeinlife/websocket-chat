@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from domain.errors import BaseError
 
 
-@dataclass
+@dataclass(frozen=True, eq=False)
 class UnexpectedMessageError(BaseError):
     event_type: str
 

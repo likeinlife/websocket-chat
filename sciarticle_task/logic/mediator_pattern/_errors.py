@@ -6,6 +6,7 @@ from logic.errors import LogicError
 from ._handler import IMediatorHandler
 
 
+@dataclass(frozen=True, eq=False)
 class MediatorError(LogicError):
     """Base mediator error."""
 
@@ -14,7 +15,7 @@ class MediatorError(LogicError):
         return "Command mediator error"
 
 
-@dataclass
+@dataclass(frozen=True, eq=False)
 class HandlerNotRegisteredError(MediatorError):
     """Mediator not registered error."""
 
@@ -25,7 +26,7 @@ class HandlerNotRegisteredError(MediatorError):
         return f"Command handler {self.mediator_entity} not registered"
 
 
-@dataclass
+@dataclass(frozen=True, eq=False)
 class HandlerEventTypeError(MediatorError):
     """Wrong mediator entity type."""
 
@@ -38,7 +39,7 @@ class HandlerEventTypeError(MediatorError):
         return f"Wrong command handler {self.handler} type. Need - {self.need_event}, got - {self.got_event}"
 
 
-@dataclass
+@dataclass(frozen=True, eq=False)
 class InvalidEventTypeError(MediatorError):
     """Invalid mediator event type."""
 

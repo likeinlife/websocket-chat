@@ -3,14 +3,15 @@ from dataclasses import dataclass
 from domain.errors import BaseError
 
 
-class EmptyTextError(BaseError):  # noqa: D101
+@dataclass(frozen=True, eq=False)
+class EmptyTextError(BaseError):
     @property
     def message(self) -> str:
         return "Empty text"
 
 
-@dataclass
-class MessageTooLongError(BaseError):  # noqa: D101
+@dataclass(frozen=True, eq=False)
+class MessageTooLongError(BaseError):
     max_length: int
     input_length: int
 

@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from logic.errors import LogicError
 
 
+@dataclass(frozen=True, eq=False)
 class UseCaseError(LogicError):
     """Base use case error."""
 
@@ -11,7 +12,7 @@ class UseCaseError(LogicError):
         return "Use case error"
 
 
-@dataclass
+@dataclass(frozen=True, eq=False)
 class ChatNotFoundError(UseCaseError):
     """Requested chat not found."""
 

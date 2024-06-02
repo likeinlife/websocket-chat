@@ -53,9 +53,9 @@ ignore = [
     # Allow no-typehints
     "ANN101",
     "ANN102",
-    # Allow public module without docstring
+    # Allow public module, class, method without docstring
     "D100",
-    # Allow public method withoud docstring
+    "D101",
     "D102",
     # Allow type: ignore
     "PGH003",

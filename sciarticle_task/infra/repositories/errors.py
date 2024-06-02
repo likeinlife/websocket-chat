@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from domain.errors import BaseError
 
 
+@dataclass(frozen=True, eq=False)
 class RepositoryError(BaseError):
     """Base repository error."""
 
@@ -11,7 +12,7 @@ class RepositoryError(BaseError):
         return "Repository error"
 
 
-@dataclass
+@dataclass(frozen=True, eq=False)
 class ChatNotFoundError(BaseError):
     """Requested chat not found."""
 
@@ -22,7 +23,7 @@ class ChatNotFoundError(BaseError):
         return f"Chat not found: {self.chat_id}"
 
 
-@dataclass
+@dataclass(frozen=True, eq=False)
 class MessageNotFoundError(BaseError):
     """Requested message not found."""
 

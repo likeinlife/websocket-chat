@@ -76,7 +76,14 @@ extend-immutable-calls = [
 "tests/**/*.py" = ["D", "S", "ANN"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["application", "core", "domain", "infra", "logic"]
+known-first-party = [
+    "application",
+    "core",
+    "domain",
+    "infra",
+    "logic",
+    "container",
+]
 
 
 [tool.mypy]

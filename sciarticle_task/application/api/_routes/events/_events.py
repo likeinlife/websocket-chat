@@ -1,11 +1,11 @@
 import typing as tp
 from uuid import UUID
 
-from container import Container
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, HTTPException
 from faststream.rabbit.fastapi import RabbitRouter
 
+from container import Container
 from logic.interactors import EventsInteractor
 from logic.serializers import BaseEventSerializer
 

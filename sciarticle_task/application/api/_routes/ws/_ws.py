@@ -1,9 +1,9 @@
 from contextlib import suppress
 
-from container import Container
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, Response, WebSocket, status
 
+from container import Container
 from infra.websockets import WebSocketConnectionManager
 
 router = APIRouter()
